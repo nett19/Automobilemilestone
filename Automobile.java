@@ -5,30 +5,42 @@ public class Automobile {
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
 
-    System.out.println("Enter a string containing information about multiple cars separated by commas (e.g., Honda Civic,2020,Blue,Toyota Camry,2022,Black):");
-    String carInfoString = scanner.nextLine();
+    String[][] carInfo = {
+        {"Honda", "Civic", "2023", "Red"},
+        {"Toyota", "Camry", "2022", "Black"},
+        {"Ford", "Mustang", "2021", "Blue"}
+    };
 
-    System.out.println("Enter the name of the car to remove information about:");
+    int carCount = 1; 
+
+    System.out.println("Enter the name of the car (Make, Model) to remove information about:");
     String carToRemove = scanner.nextLine();
 
-    String modifiedCarInfo = removeCarInfo(carInfoString, carToRemove);
+    String[] modifiedCarInfo = removeCarInfo(carInfo, carToRemove);
 
-    System.out.println("Modified car information:");
-    System.out.println(modifiedCarInfo);
+    for (String car : modifiedCarInfo) {
+      if (car != null) { 
+        System.out.printf("Car %d: %s\n", carCount, car);
+        carCount++;
+      }
+    }
 
     scanner.close();
   }
 
-  public static String removeCarInfo(String carInfoString, String carToRemove) {
-    String[] carInfoList = carInfoString.split(",");
-    StringBuilder modifiedCarInfo = new StringBuilder();
+  public static String[] removeCarInfo(String[][] carInfo, String carToRemove) {
+    String[] modifiedCarInfo = new String[carInfo.length];
+    int j = 0; 
 
-    for (String carInfo : carInfoList) {
-      if (!carInfo.contains(carToRemove)) {
-        modifiedCarInfo.append(carInfo).append(",");
+    for (String[] carDetails : carInfo) {
+      StringBuilder makeModel = new StringBuilder();
+      makeModel.append(carDetails[0]).append(" ").append(carDetails[1]);
+
+      if (!makeModel.toString().contains(carToRemove)) {
+        modifiedCarInfo[j++] = makeModel.toString();
       }
     }
 
-    return modifiedCarInfo.toString().replaceAll(",$", "");
+    return modifiedCarInfo;
   }
 }
